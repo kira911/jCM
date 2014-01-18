@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="router_subreport" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COD_CLI" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     zona.`areas` AS zona_areas,
+     zona.`camera` AS zona_camera,
+     users.`username` AS users_username,
+     sinal_router.`dat` AS sinal_router_dat,
+     sinal_router.`data_espera` AS sinal_router_data_espera,
+     sinal_router.`data_encerramento` AS sinal_router_data_encerramento,
+     sinal_router.`org` AS sinal_router_org,
+     sinal_router.`log` AS sinal_router_log,
+     sinal_router.`duracao` AS sinal_router_duracao
+FROM
+     `cliente` cliente INNER JOIN `sinal_router` sinal_router ON cliente.`cod_cli` = sinal_router.`cod_cli`
+     INNER JOIN `zona` zona ON cliente.`idcliente` = zona.`idcliente`
+     INNER JOIN `users` users ON sinal_router.`username` = users.`username`
+WHERE cliente.cod_cli like $P{COD_CLI}
+GROUP BY sinal_router.idsinal_router]]>
+	</queryString>
+	<field name="zona_areas" class="java.lang.String"/>
+	<field name="zona_camera" class="java.lang.Integer"/>
+	<field name="users_username" class="java.lang.String"/>
+	<field name="sinal_router_dat" class="java.sql.Timestamp"/>
+	<field name="sinal_router_data_espera" class="java.sql.Timestamp"/>
+	<field name="sinal_router_data_encerramento" class="java.sql.Timestamp"/>
+	<field name="sinal_router_org" class="java.lang.String"/>
+	<field name="sinal_router_log" class="java.lang.String"/>
+	<field name="sinal_router_duracao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="802" height="37" backcolor="#999999"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="10" width="46" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Evento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="10" width="196" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Câmera]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="10" width="85" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Recebimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="10" width="85" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Espera]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="10" width="85" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Encerramento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="10" width="63" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Operador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="10" width="59" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tempo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="619" y="10" width="183" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[LOG]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="5" width="46" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_org}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="46" y="5" width="196" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{zona_camera} + " - " + $F{zona_areas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="242" y="5" width="85" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_dat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="5" width="63" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{users_username}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="560" y="5" width="59" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_duracao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="619" y="5" width="183" height="20"/>
+				<textElement markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_log}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="327" y="5" width="85" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_data_espera}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="412" y="5" width="85" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinal_router_data_encerramento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

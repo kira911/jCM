@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="os" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.210000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#6495ED">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFD6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF4FF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IDOS" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Dvr\\Documents\\NetBeansProjects\\jCM\\src\\br\\com\\fox\\relatorios\\logo.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     os.`data` AS os_data,
+     os.`verificar` AS os_verificar,
+     os.`solicitado` AS os_solicitado,
+     os.`descricao` AS os_descricao,
+     os.`data_chegada` AS os_data_chegada,
+     os.`data_termino` AS os_data_termino,
+     os.`status` AS os_status,
+     os.`tecnico` AS os_tecnico,
+     users.`username` AS users_username,
+     cliente.`cod_cli` AS cliente_cod_cli,
+     cliente.`nome` AS cliente_nome,
+     cliente.`endereco` AS cliente_endereco,
+     cliente.`bairro` AS cliente_bairro,
+     cliente.`cidade` AS cliente_cidade,
+     cliente.`uf` AS cliente_uf,
+     cliente.`responsavel` AS cliente_responsavel,
+     cliente.`fone_local` AS cliente_fone_local,
+     cliente.`tp_equipamento` AS cliente_tp_equipamento,
+     cliente.`fone_local2` AS cliente_fone_local2,
+     os.`idos` AS os_idos
+FROM
+     `cliente` cliente INNER JOIN `os` os ON cliente.`idcliente` = os.`idcliente`
+     INNER JOIN `users` users ON os.`username` = users.`username`
+WHERE
+     os.idos = $P{IDOS}]]>
+	</queryString>
+	<field name="os_data" class="java.sql.Timestamp"/>
+	<field name="os_verificar" class="java.lang.String"/>
+	<field name="os_solicitado" class="java.lang.String"/>
+	<field name="os_descricao" class="java.lang.String"/>
+	<field name="os_data_chegada" class="java.sql.Timestamp"/>
+	<field name="os_data_termino" class="java.sql.Timestamp"/>
+	<field name="os_status" class="java.lang.String"/>
+	<field name="os_tecnico" class="java.lang.String"/>
+	<field name="users_username" class="java.lang.String"/>
+	<field name="cliente_cod_cli" class="java.lang.Integer"/>
+	<field name="cliente_nome" class="java.lang.String"/>
+	<field name="cliente_endereco" class="java.lang.String"/>
+	<field name="cliente_bairro" class="java.lang.String"/>
+	<field name="cliente_cidade" class="java.lang.String"/>
+	<field name="cliente_uf" class="java.lang.String"/>
+	<field name="cliente_responsavel" class="java.lang.String"/>
+	<field name="cliente_fone_local" class="java.lang.String"/>
+	<field name="cliente_tp_equipamento" class="java.lang.String"/>
+	<field name="cliente_fone_local2" class="java.lang.String"/>
+	<field name="os_idos" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="92">
+			<frame>
+				<reportElement mode="Opaque" x="-25" y="0" width="601" height="92" backcolor="#006699"/>
+				<rectangle>
+					<reportElement x="28" y="0" width="150" height="92"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="363" y="9" width="179" height="33" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center">
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Chamado Técnico]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy HH.mm.ss">
+					<reportElement x="401" y="62" width="141" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{os_data}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="363" y="62" width="38" height="20" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Data:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="439" y="42" width="103" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[String.format("%05d", $F{os_idos})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="363" y="42" width="76" height="20" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Nº]]></text>
+				</staticText>
+				<image>
+					<reportElement x="63" y="9" width="75" height="75"/>
+					<imageExpression><![CDATA[$P{IMG}]]></imageExpression>
+				</image>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="129">
+			<staticText>
+				<reportElement x="0" y="8" width="61" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cód. Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="8" width="42" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_cod_cli}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="101" y="8" width="37" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="137" y="8" width="418" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="28" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[Endereço:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="28" width="505" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_endereco} + " - " + $F{cliente_bairro} + " - " + $F{cliente_cidade} + " - " + $F{cliente_uf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="48" width="66" height="20"/>
+				<textElement/>
+				<text><![CDATA[Responsável:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="65" y="48" width="233" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_responsavel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="48" width="28" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fone:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="326" y="48" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_fone_local}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="48" width="38" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fone 2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="462" y="48" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_fone_local2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="68" width="65" height="20"/>
+				<textElement/>
+				<text><![CDATA[Equipamento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="64" y="68" width="490" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cliente_tp_equipamento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="88" width="44" height="20"/>
+				<textElement/>
+				<text><![CDATA[Verificar:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="88" width="512" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{os_verificar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="108" width="68" height="20"/>
+				<textElement/>
+				<text><![CDATA[Solicitado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="68" y="108" width="318" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{os_solicitado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="108" width="51" height="20"/>
+				<textElement/>
+				<text><![CDATA[Operador:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="437" y="108" width="117" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{users_username}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="552">
+			<rectangle>
+				<reportElement x="435" y="296" width="121" height="158"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="318" y="296" width="119" height="158"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="88" y="296" width="230" height="158"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="296" width="87" height="158"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="14" width="58" height="20"/>
+				<textElement/>
+				<text><![CDATA[Descrição:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="83" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="103" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="123" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="143" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="163" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="183" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="203" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="223" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="243" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="263" width="118" height="20"/>
+				<textElement/>
+				<text><![CDATA[Equipamentos Utilizados:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="306" width="85" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="306" width="230" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Descrição do produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="306" width="119" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Valor Unitário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="306" width="117" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Valor Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="333" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="353" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="373" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="393" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="413" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="433" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="460" width="555" height="32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Declaro (amos) que o técnico executou os serviços descritos e que deixou o equipamento funcionando a contento.
+Reconhecemos este como ORDEM DE SERVIÇO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="503" width="61" height="20"/>
+				<textElement/>
+				<text><![CDATA[Responsável:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="66" y="514" width="216" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="298" y="503" width="55" height="20"/>
+				<textElement/>
+				<text><![CDATA[Assinatura:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="352" y="514" width="198" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="529" width="41" height="20"/>
+				<textElement/>
+				<text><![CDATA[Técnico:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="44" y="540" width="127" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="181" y="529" width="27" height="20"/>
+				<textElement/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="209" y="540" width="71" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="285" y="529" width="66" height="20"/>
+				<textElement/>
+				<text><![CDATA[Hora chegada:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="353" y="540" width="60" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="419" y="529" width="66" height="20"/>
+				<textElement/>
+				<text><![CDATA[Hora Término:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="489" y="540" width="60" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="3" y="34" width="549" height="50"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{os_descricao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="221" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

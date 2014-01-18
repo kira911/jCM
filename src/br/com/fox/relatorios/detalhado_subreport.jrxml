@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detalhado_subreport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#1E90FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE0FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Table Dataset 1"/>
+	<parameter name="IDCLIENTE" class="java.lang.Integer"/>
+	<parameter name="START_DATE" class="java.lang.String"/>
+	<parameter name="END_DATE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     alarme.idalarme as alarme_idalarme,
+     protocolo.`evento` AS protocolo_evento,
+     protocolo.`descricao` AS protocolo_descricao,
+     cuc.`sigla` AS cuc_sigla,
+     users.`username` AS users_username,
+     alarme.`data_recebimento` AS alarme_data_recebimento,
+     alarme.data_espera as alarme_date_espera,
+     alarme.data_encerramento as alarme_date_encerramento,
+     alarme.`log` AS alarme_log,
+     alarme.`status` AS alarme_status,
+     alarme.`duracao` AS alarme_duracao,
+     CASE cuc.auxiliar
+        WHEN
+            'Zona'
+        THEN
+            (select
+                    CASE count(num_zona)
+                            WHEN 0 THEN alarme.zona
+                            ELSE num_zona
+                        END as num_zona
+                FROM
+                    zona
+                WHERE
+                    num_zona = alarme.zona and idcliente = alarme.idcliente
+                LIMIT 1)
+        WHEN
+            'Usuário'
+        THEN
+            (select
+                    CASE count(codigo)
+                            WHEN 0 THEN alarme.zona
+                            else codigo
+                        END as codigo
+                FROM
+                    usuario
+                WHERE
+                    codigo = alarme.zona and idcliente = alarme.idcliente
+                LIMIT 1)
+        WHEN 'Nenhum' THEN ''
+    END as id_auxiliar,
+    CASE cuc.auxiliar
+        WHEN
+            'Zona'
+        THEN
+            (select
+                    CASE count(areas)
+                            WHEN 0 THEN 'Zona não cadastrada'
+                            else areas
+                        END as codigo
+                FROM
+                    zona
+                WHERE
+                    num_zona = alarme.zona and idcliente = alarme.idcliente
+                LIMIT 1)
+        WHEN
+            'Usuário'
+        THEN
+            (select
+                    CASE count(nome)
+                            WHEN 0 THEN 'Usuário não cadastrado'
+                            else nome
+                        END as codigo
+                FROM
+                    usuario
+                WHERE
+                    codigo = alarme.zona and idcliente = alarme.idcliente
+                LIMIT 1)
+        WHEN 'Nenhum' THEN ''
+    END as auxiliar
+FROM
+     `protocolo` protocolo INNER JOIN `alarme` alarme ON protocolo.`idprotocolo` = alarme.`idprotocolo`
+     INNER JOIN `cuc` cuc ON protocolo.`cuc` = cuc.`idcuc`
+     INNER JOIN `users` users ON alarme.`username` = users.`username`
+     INNER JOIN `cliente` cliente ON alarme.`idcliente` = cliente.`idcliente`
+     INNER JOIN `usuario` usuario ON cliente.`idcliente` = usuario.`idcliente`
+     INNER JOIN `zona` zona ON cliente.`idcliente` = zona.`idcliente`
+WHERE alarme.idcliente = $P{IDCLIENTE}
+     AND cast(alarme.data_recebimento as DATE) >= $P{START_DATE}
+     AND cast(alarme.data_recebimento as DATE) <= $P{END_DATE}
+GROUP BY alarme.idalarme
+ORDER BY alarme.data_recebimento]]>
+	</queryString>
+	<field name="alarme_idalarme" class="java.lang.Integer"/>
+	<field name="protocolo_evento" class="java.lang.String"/>
+	<field name="protocolo_descricao" class="java.lang.String"/>
+	<field name="cuc_sigla" class="java.lang.String"/>
+	<field name="users_username" class="java.lang.String"/>
+	<field name="alarme_data_recebimento" class="java.sql.Timestamp"/>
+	<field name="alarme_date_espera" class="java.sql.Timestamp"/>
+	<field name="alarme_date_encerramento" class="java.sql.Timestamp"/>
+	<field name="alarme_log" class="java.lang.String"/>
+	<field name="alarme_status" class="java.lang.String"/>
+	<field name="alarme_duracao" class="java.lang.String"/>
+	<field name="id_auxiliar" class="java.lang.String"/>
+	<field name="auxiliar" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="800" height="37" backcolor="#999999"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="10" width="46" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Evento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="10" width="166" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="10" width="82" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Recebimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="10" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[auxiliar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="10" width="82" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Espera]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="486" y="10" width="82" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Encerramento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="568" y="10" width="73" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Operador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="641" y="10" width="56" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tempo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="10" width="103" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[LOG]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="6" width="46" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{protocolo_evento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="46" y="6" width="166" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{protocolo_descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="322" y="6" width="82" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alarme_data_recebimento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="568" y="6" width="73" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{users_username}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="641" y="6" width="56" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alarme_duracao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement x="222" y="6" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_auxiliar} + " - " + $F{auxiliar}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="697" y="6" width="103" height="20"/>
+				<textElement markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alarme_log}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="404" y="6" width="82" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alarme_date_espera}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="486" y="6" width="82" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alarme_date_encerramento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
