@@ -6,6 +6,8 @@ import java.util.List;
  *
  * @author VAN
  */
+
+//Essa classe serve para carregar qualquer retorno do banco que não tenha um objeto definido
 public class TransientDBObject {
     private Integer id;
     private List columnList;
