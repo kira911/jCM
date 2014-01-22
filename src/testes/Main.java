@@ -1,7 +1,7 @@
 package testes;
 
-import br.com.fox.Hibernate.DAO.TesteDAO;
-import br.com.fox.db.Authorities;
+import br.com.fox.Hibernate.DAO.EventosSensorDAO;
+import br.com.fox.util.EventosSensor;
 import br.com.fox.util.HibernateUtil;
 import java.util.List;
 
@@ -12,16 +12,19 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        TesteDAO testeDAO = new TesteDAO(new HibernateUtil().getSession());
-        List<Authorities> listaAuthorities = testeDAO.getAuthorities();
-        int i = 0;
-        
-        for(Authorities authority : listaAuthorities) {
-            System.out.println("Volta == " + i + "usuario == " + authority.getUsername().getUsername());            
-            ++i;
-        }
+        EventosSensorDAO evtSensorDAO = new EventosSensorDAO(HibernateUtil.getSession());
+        evtSensorDAO.getListEventosSensor();
+        //List<EventosSensor> eventosSensor = evtSensorDAO.getListEventosSensor();        
         
         System.out.println("Rodou");
+//        TesteDAO testeDAO = new TesteDAO(new HibernateUtil().getSession());
+//        List<Authorities> listaAuthorities = testeDAO.getAuthorities();
+//        int i = 0;
+//        
+//        for(Authorities authority : listaAuthorities) {
+//            System.out.println("Volta == " + i + "usuario == " + authority.getUsername().getUsername());            
+//            ++i;
+//        }
     }
     
 }

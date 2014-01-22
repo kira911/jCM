@@ -7,30 +7,22 @@ import java.util.List;
  * @author VAN
  */
 
-//Essa classe serve para carregar qualquer retorno do banco que não tenha um objeto definido
+//This class is meant to load any database return which has no defined object
 public class TransientDBObject {
-    private Integer id;
-    private List columnList;
-    private List valueList;
-    
-    public Integer getID() {
-        return this.id;
+    private String column;
+    private List<String> listValues;
+
+    public String getColumn() {
+        return this.column;
     }
-    public void setID(Integer id) {
-        this.id = id;
+    public void setColumn(String column) {
+        this.column = column;
     }
-    
-    public List getColumnList() {
-        return this.columnList;
+
+    public List<String> getListValues() {
+        return this.listValues;
     }
-    public void setColumnList(List columnList) {
-        this.columnList = columnList;
-    }
-    
-    public List getValueList() {
-        return this.valueList;
-    }
-    public void setValueList(List valueList) {
-        this.valueList = valueList;
+    public void setListValues(List<String> listValues) {
+        this.listValues = listValues;
     }
 }

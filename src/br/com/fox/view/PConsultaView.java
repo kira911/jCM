@@ -1,5 +1,6 @@
 package br.com.fox.view;
 
+import br.com.fox.Hibernate.DAO.EventosSensorDAO;
 import br.com.fox.controller.AlarmeJpaController;
 import br.com.fox.controller.ClienteJpaController;
 import br.com.fox.controller.SinalRouterJpaController;
@@ -9,6 +10,8 @@ import br.com.fox.db.Contato;
 import br.com.fox.db.SinalRouter;
 import br.com.fox.db.Usuario;
 import br.com.fox.db.Zona;
+import br.com.fox.util.EventosSensor;
+import br.com.fox.util.HibernateUtil;
 import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
 import com.towel.swing.table.TableFilter;
@@ -687,8 +690,31 @@ private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     }
 }//GEN-LAST:event_tbCentralMouseClicked
 
-private void listarAlarmes() {
+private void createTable(List<EventosSensor> listaEventos) {
+    DefaultTableModel modelo = new DefaultTableModel();
+    tbEventoSensor.setModel(modelo);
+    modelo.addColumn("Data Recebimento Alarme");
+    modelo.addColumn("Protocolo Evento");
+    modelo.addColumn("Protocolo Descrição");
+    modelo.addColumn("Receiver");
+    modelo.addColumn("Linha");
+    modelo.addColumn("Participação");
+    modelo.addColumn("ID Auxiliar");
+    modelo.addColumn("Auxiliar");
+    modelo.addColumn("Situação Alarme");
+    modelo.addColumn("Usuário");
+    modelo.addColumn("Duração Alarme");
+    modelo.addColumn("Log Alarme");
     
+    //Clearing the data from the table.
+    modelo.getDataVector().clear();
+
+    for(int i = 0; i < listaEventos.size(); i ++) {
+        modelo.addRow(new Object[] {listaEventos.get(i).getAlarmeDataRecebimento(), listaEventos.get(i).getProtocoloEvento(), listaEventos.get(i).getProtocoloDescricao(), 
+                                    listaEventos.get(i).getReceiver(), listaEventos.get(i).getLinha(), listaEventos.get(i).getParticao(), listaEventos.get(i).getIdAuxiliar(), 
+                                    listaEventos.get(i).getAuxiliar(), listaEventos.get(i).getAlarmeStatus(), listaEventos.get(i).getUsersUsername(),
+                                    listaEventos.get(i).getAlarmeDuracao(), listaEventos.get(i).getAlarmeLog()});
+    }
 }
 
 private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -703,16 +729,10 @@ private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             tpEvento = "%";
         }
         
-        DefaultTableModel modelo = new DefaultTableModel();
-        tbEventoSensor.setModel(modelo);
-        modelo.addColumn("Teste");
-        modelo.getDataVector().clear();
-        
-        for(int i = 0; i < 10; i ++) {
-            modelo.addRow(new Object[] {i});
-        }
-        
-        jpaAlarme.getEventosSensor(selectedCliente.getIdcliente(), dini, dfin);
+        this.createTable(new EventosSensorDAO(HibernateUtil.getSession()).getListEventosSensor());
+       
+        //A chamada abaixo estava fazendo uso do método que deletei.
+//        jpaAlarme.getEventosSensor(selectedCliente.getIdcliente(), dini, dfin);
 
         List<Alarme> list = jpaAlarme.findAlarme(tpEvento, limit, selectedCliente.getIdcliente());
         ObjectTableModel model = (ObjectTableModel) tbEventoSensor.getModel();
