@@ -1,23 +1,39 @@
 package br.com.fox.util;
 
+import com.towel.el.annotation.Resolvable;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author VAN
  */
-public class EventosSensor {
+public class EventosSensor implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    @Resolvable(colName = "Alarme Data Recebimento")
     private Date alarmeDataRecebimento;
+    @Resolvable(colName = "Protocolo Evento")
     private String protocoloEvento;
+    @Resolvable(colName = "Protocolo Descricao")
     private String protocoloDescricao;
+    @Resolvable(colName = "Receiver")
     private Integer receiver;
+    @Resolvable(colName = "Linha")
     private Integer linha;
+    @Resolvable(colName = "Particao")
     private Integer particao;
+    @Resolvable(colName = "ID Auxiliar")
     private String idAuxiliar;
+    @Resolvable(colName = "Auxiliar")
     private String auxiliar;
+    @Resolvable(colName = "Alarme Status")
     private String alarmeStatus;
+    @Resolvable(colName = "Usuario")
     private String usersUsername;
+    @Resolvable(colName = "Duracao Alarme")
     private String alarmeDuracao;
+    @Resolvable(colName = "Alarme Log")
     private String alarmeLog;
 
     public Date getAlarmeDataRecebimento() {
@@ -102,5 +118,33 @@ public class EventosSensor {
     }
     public void setAlarmeLog(String alarmeLog) {
         this.alarmeLog = alarmeLog;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+        if(getClass() != obj.getClass()) {
+            return false;
+        }
+        final EventosSensor other = (EventosSensor) obj;
+        if((this.idAuxiliar == null) ? (other.idAuxiliar != null) : !this.idAuxiliar.equals(other.idAuxiliar)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + (this.idAuxiliar != null ? this.idAuxiliar.hashCode(): 0);
+        
+        return hash;
+    }
+    
+    @Override    
+    public String toString() {
+        return "EventosSensor{" + "alarmeDataRecebimento=" + alarmeDataRecebimento + ", protocoloEvento=" + protocoloEvento + ", protocoloDescricao=" + protocoloDescricao + ", receiver=" + receiver + ", linha=" + linha + ", particao=" + particao + ",idAuxiliar=" + idAuxiliar + ", auxiliar=" + auxiliar + ", alarmeStatus=" + alarmeStatus + ", usersUsername=" + usersUsername + ", alarmeDuracao=" + alarmeDuracao + ", alarmeLog=" + alarmeLog + '}';
     }
 }

@@ -16,13 +16,11 @@ import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
 import com.towel.swing.table.TableFilter;
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -656,43 +654,52 @@ private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 }//GEN-LAST:event_tbCentralMouseClicked
 
 private void createTable(List<EventosSensor> listaEventos) {
-    DefaultTableModel modelo = new DefaultTableModel();
-    tbEventoSensor.setModel(modelo);
-    modelo.addColumn("Data Recebimento Alarme");
-    modelo.addColumn("Protocolo Evento");
-    modelo.addColumn("Protocolo Descrição");
-    modelo.addColumn("Receiver");
-    modelo.addColumn("Linha");
-    modelo.addColumn("Participação");
-    modelo.addColumn("ID Auxiliar");
-    modelo.addColumn("Auxiliar");
-    modelo.addColumn("Situação Alarme");
-    modelo.addColumn("Usuário");
-    modelo.addColumn("Duração Alarme");
-    modelo.addColumn("Log Alarme");
+    AnnotationResolver resolver = new AnnotationResolver(EventosSensor.class);
+    ObjectTableModel<EventosSensor> model = new ObjectTableModel<>(resolver, "alarmeDataRecebimento,protocoloEvento,protocoloDescricao,receiver,linha,particao,idAuxiliar,auxiliar,alarmeStatus,usersUsername,alarmeDuracao,alarmeLog");
+    TableFilter filter = new TableFilter(tbEventoSensor.getTableHeader(), model);
     
-    tbEventoSensor.getColumnModel().getColumn(0).setPreferredWidth(140);
-    tbEventoSensor.getColumnModel().getColumn(1).setPreferredWidth(20);
-    tbEventoSensor.getColumnModel().getColumn(2).setPreferredWidth(170);
-    tbEventoSensor.getColumnModel().getColumn(3).setPreferredWidth(5);
-    tbEventoSensor.getColumnModel().getColumn(4).setPreferredWidth(5);
-    tbEventoSensor.getColumnModel().getColumn(5).setPreferredWidth(5);
-    tbEventoSensor.getColumnModel().getColumn(6).setPreferredWidth(25);
-    tbEventoSensor.getColumnModel().getColumn(7).setPreferredWidth(35);
-    tbEventoSensor.getColumnModel().getColumn(8).setPreferredWidth(30);
-    tbEventoSensor.getColumnModel().getColumn(9).setPreferredWidth(40);
-    tbEventoSensor.getColumnModel().getColumn(10).setPreferredWidth(35);
-    tbEventoSensor.getColumnModel().getColumn(11).setPreferredWidth(165);
-    
-    //Clearing the data from the table.
-    modelo.getDataVector().clear();
-
-    for(int i = 0; i < listaEventos.size(); i ++) {
-        modelo.addRow(new Object[] {listaEventos.get(i).getAlarmeDataRecebimento(), listaEventos.get(i).getProtocoloEvento(), listaEventos.get(i).getProtocoloDescricao(), 
-                                    listaEventos.get(i).getReceiver(), listaEventos.get(i).getLinha(), listaEventos.get(i).getParticao(), listaEventos.get(i).getIdAuxiliar(), 
-                                    listaEventos.get(i).getAuxiliar(), listaEventos.get(i).getAlarmeStatus(), listaEventos.get(i).getUsersUsername(),
-                                    listaEventos.get(i).getAlarmeDuracao(), listaEventos.get(i).getAlarmeLog()});
+    for(EventosSensor eventoSensor : listaEventos) {
+        model.add(eventoSensor);        
     }
+    
+    tbEventoSensor.setModel(filter);
+//    DefaultTableModel modelo = new DefaultTableModel();
+//    tbEventoSensor.setModel(modelo);
+//    modelo.addColumn("Data Recebimento Alarme");
+//    modelo.addColumn("Protocolo Evento");
+//    modelo.addColumn("Protocolo Descrição");
+//    modelo.addColumn("Receiver");
+//    modelo.addColumn("Linha");
+//    modelo.addColumn("Participação");
+//    modelo.addColumn("ID Auxiliar");
+//    modelo.addColumn("Auxiliar");
+//    modelo.addColumn("Situação Alarme");
+//    modelo.addColumn("Usuário");
+//    modelo.addColumn("Duração Alarme");
+//    modelo.addColumn("Log Alarme");
+//    
+//    tbEventoSensor.getColumnModel().getColumn(0).setPreferredWidth(140);
+//    tbEventoSensor.getColumnModel().getColumn(1).setPreferredWidth(20);
+//    tbEventoSensor.getColumnModel().getColumn(2).setPreferredWidth(170);
+//    tbEventoSensor.getColumnModel().getColumn(3).setPreferredWidth(5);
+//    tbEventoSensor.getColumnModel().getColumn(4).setPreferredWidth(5);
+//    tbEventoSensor.getColumnModel().getColumn(5).setPreferredWidth(5);
+//    tbEventoSensor.getColumnModel().getColumn(6).setPreferredWidth(25);
+//    tbEventoSensor.getColumnModel().getColumn(7).setPreferredWidth(35);
+//    tbEventoSensor.getColumnModel().getColumn(8).setPreferredWidth(30);
+//    tbEventoSensor.getColumnModel().getColumn(9).setPreferredWidth(40);
+//    tbEventoSensor.getColumnModel().getColumn(10).setPreferredWidth(35);
+//    tbEventoSensor.getColumnModel().getColumn(11).setPreferredWidth(165);
+//    
+//    //Clearing the data from the table.
+//    modelo.getDataVector().clear();
+//
+//    for(int i = 0; i < listaEventos.size(); i ++) {
+//        modelo.addRow(new Object[] {listaEventos.get(i).getAlarmeDataRecebimento(), listaEventos.get(i).getProtocoloEvento(), listaEventos.get(i).getProtocoloDescricao(), 
+//                                    listaEventos.get(i).getReceiver(), listaEventos.get(i).getLinha(), listaEventos.get(i).getParticao(), listaEventos.get(i).getIdAuxiliar(), 
+//                                    listaEventos.get(i).getAuxiliar(), listaEventos.get(i).getAlarmeStatus(), listaEventos.get(i).getUsersUsername(),
+//                                    listaEventos.get(i).getAlarmeDuracao(), listaEventos.get(i).getAlarmeLog()});
+//    }
 }
 
 private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
