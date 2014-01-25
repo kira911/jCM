@@ -5,7 +5,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/br/com/fox/view/PConsultaView.java</file>
+            <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/br/com/fox/util/TransientDBObject.java</file>
+            <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/META-INF/persistence.xml</file>
+            <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/META-INF/hibernate.cfg.xml</file>
             <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/br/com/fox/view/SplashScreen.java</file>
+            <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/config.xml</file>
+            <file>file:/V:/(Van4)/Programacao/workspaces/NetbeansProjects/Projeto%20Felipe/Central%20Monitoramento/jCM/src/br/com/fox/Hibernate/DAO/EventosSensorDAO.java</file>
         </group>
     </open-files>
 </project-private>

@@ -21,7 +21,7 @@ public class EventosSensorDAO {
         this.session = session;
     }
     
-    public List<EventosSensor> getListEventosSensor() {
+    public List<EventosSensor> getListEventosSensor(Integer idCliente, Date startDate, Date endDate, Integer limit) {
         String sql = "select " +
                     "alarme.data_recebimento as alarme_data_recebimento, " +
                     "protocolo.evento as protocolo_evento, " +
@@ -99,17 +99,17 @@ public class EventosSensorDAO {
                  "inner join cliente cliente on alarme.idcliente = cliente.idcliente " +
                  "inner join usuario usuario on cliente.idcliente = usuario.idcliente " +
                  "inner join zona zona on cliente.idcliente = zona.idcliente " +
-             "where alarme.idcliente = 21 " +
-                 " and cast(alarme.data_recebimento as Date) >= '2011-17-01 09:47:40' " +
-                 "and cast(alarme.data_recebimento as Date) <= '2014-17-01 20:40:38' " +
+             "where alarme.idcliente = :idCliente " +
+                 " and cast(alarme.data_recebimento as Date) >= :startDate " +
+                 "and cast(alarme.data_recebimento as Date) <= :endDate " +
             "group by alarme.idalarme " +
             "order by alarme.data_recebimento ";
         
         try {
             this.session.beginTransaction();
-            Query query = this.session.createSQLQuery(sql);   
-            List queryList = query.list();                        
-            ListIterator iterator = queryList.listIterator();
+            ListIterator iterator = this.session.createSQLQuery(sql).setParameter("idCliente", idCliente)
+                                                                    .setParameter("startDate", startDate)
+                                                                    .setParameter("endDate", endDate).setMaxResults(limit).list().listIterator();            
             List<EventosSensor> listaEventos = new ArrayList<EventosSensor>();
             //Converting the return into as eventosSensor
             while(iterator.hasNext()) {
@@ -134,6 +134,9 @@ public class EventosSensorDAO {
             return listaEventos;
         }catch(HibernateException ex) {
             ex.printStackTrace();
+            return null;
+        }catch(NullPointerException ex) {
+            ex.printStackTrace();            
             return null;
         }finally {
             try {

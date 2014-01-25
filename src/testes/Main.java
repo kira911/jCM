@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         EventosSensorDAO evtSensorDAO = new EventosSensorDAO(HibernateUtil.getSession());
-        evtSensorDAO.getListEventosSensor();
+//        evtSensorDAO.getListEventosSensor();
         //List<EventosSensor> eventosSensor = evtSensorDAO.getListEventosSensor();        
         
         System.out.println("Rodou");

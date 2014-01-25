@@ -580,7 +580,6 @@
                             <Property name="date" type="java.util.Date" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                               <Connection code="new Date()" type="code"/>
                             </Property>
-                            <Property name="enabled" type="boolean" value="false"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel6">

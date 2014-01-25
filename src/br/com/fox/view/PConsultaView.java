@@ -37,40 +37,6 @@ public class PConsultaView extends javax.swing.JPanel {
 
     public PConsultaView() {
         initComponents();
-        //carregarTableFilter();
-    }
-
-    private void carregarTableFilter() {
-        ObjectTableModel<Cliente> tableModelCentral = new ObjectTableModel(
-                new AnnotationResolver(Cliente.class), "codCli,nome,fantasia,foneLocal,foneLocal2,endereco,bairro,cidade,uf");  
-        TableFilter filterCentral = new TableFilter(tbCentral.getTableHeader(), tableModelCentral);
-        tbCentral.setModel(filterCentral);
-        
-        ObjectTableModel<Contato> tableModelContato = new ObjectTableModel(
-                new AnnotationResolver(Contato.class), "nome,fone,fone2,prioridade,funcao");  
-        TableFilter filterContato = new TableFilter(tbContato.getTableHeader(), tableModelContato);
-        tbContato.setModel(filterContato);        
-        
-        ObjectTableModel<Usuario> tableModelUsuario = new ObjectTableModel(
-                new AnnotationResolver(Usuario.class), "nome,cargo,codigo");  
-        TableFilter filterUsuario = new TableFilter(tbUsuario.getTableHeader(), tableModelUsuario);
-        tbUsuario.setModel(filterUsuario);
-        
-        ObjectTableModel<Zona> tableModelZona = new ObjectTableModel(
-                new AnnotationResolver(Zona.class), "areas,camera,numZona");
-        TableFilter filterZona = new TableFilter(tbZona.getTableHeader(), tableModelZona);
-        tbZona.setModel(filterZona);
-        
-        ObjectTableModel<Alarme> tableModelAlarme = new ObjectTableModel(
-                new AnnotationResolver(Alarme.class), "dataRecebimento,idprotocolo.descricao,receiver,linha,particao,zona.areas,status,username.username,duracao");
-                //new AnnotationResolver(Alarme.class), "dataRecebimento,idprotocolo.descricao,receiver,linha,particao,status,username.username,duracao");
-        TableFilter filterAlarme = new TableFilter(tbEventoSensor.getTableHeader(), tableModelAlarme);
-        tbEventoSensor.setModel(filterAlarme);
-        
-        ObjectTableModel<SinalRouter> tableModelSinalRouter = new ObjectTableModel(
-                new AnnotationResolver(SinalRouter.class), "dat,nuc,apl,org,sub,status,username.username,duracao");
-        TableFilter filterSinalRouter = new TableFilter(tbEventoRouter.getTableHeader(), tableModelSinalRouter);
-        tbEventoRouter.setModel(filterSinalRouter);        
     }
     
     @SuppressWarnings("unchecked")
@@ -312,7 +278,6 @@ public class PConsultaView extends javax.swing.JPanel {
         jLabel5.setText("De:");
 
         dInicial.setDate(new Date());
-        dInicial.setEnabled(false);
 
         jLabel6.setText("Até:");
 
@@ -568,7 +533,7 @@ public class PConsultaView extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -706,6 +671,19 @@ private void createTable(List<EventosSensor> listaEventos) {
     modelo.addColumn("Duração Alarme");
     modelo.addColumn("Log Alarme");
     
+    tbEventoSensor.getColumnModel().getColumn(0).setPreferredWidth(140);
+    tbEventoSensor.getColumnModel().getColumn(1).setPreferredWidth(20);
+    tbEventoSensor.getColumnModel().getColumn(2).setPreferredWidth(170);
+    tbEventoSensor.getColumnModel().getColumn(3).setPreferredWidth(5);
+    tbEventoSensor.getColumnModel().getColumn(4).setPreferredWidth(5);
+    tbEventoSensor.getColumnModel().getColumn(5).setPreferredWidth(5);
+    tbEventoSensor.getColumnModel().getColumn(6).setPreferredWidth(25);
+    tbEventoSensor.getColumnModel().getColumn(7).setPreferredWidth(35);
+    tbEventoSensor.getColumnModel().getColumn(8).setPreferredWidth(30);
+    tbEventoSensor.getColumnModel().getColumn(9).setPreferredWidth(40);
+    tbEventoSensor.getColumnModel().getColumn(10).setPreferredWidth(35);
+    tbEventoSensor.getColumnModel().getColumn(11).setPreferredWidth(165);
+    
     //Clearing the data from the table.
     modelo.getDataVector().clear();
 
@@ -729,20 +707,17 @@ private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             tpEvento = "%";
         }
         
-        this.createTable(new EventosSensorDAO(HibernateUtil.getSession()).getListEventosSensor());
-       
-        //A chamada abaixo estava fazendo uso do método que deletei.
-//        jpaAlarme.getEventosSensor(selectedCliente.getIdcliente(), dini, dfin);
+        this.createTable(new EventosSensorDAO(HibernateUtil.getSession()).getListEventosSensor(selectedCliente.getIdcliente(), dini, dfin, limit));
 
-        List<Alarme> list = jpaAlarme.findAlarme(tpEvento, limit, selectedCliente.getIdcliente());
-        ObjectTableModel model = (ObjectTableModel) tbEventoSensor.getModel();
-        model.clear();
-
-        for (Alarme alarme : list) {
-            model.add(alarme);
-        }
-
-        tbEventoSensor.setDefaultRenderer(Object.class, new ColorTableRenderer());
+//        List<Alarme> list = jpaAlarme.findAlarme(tpEvento, limit, selectedCliente.getIdcliente());
+//        ObjectTableModel model = (ObjectTableModel) tbEventoSensor.getModel();
+//        model.clear();
+//
+//        for (Alarme alarme : list) {
+//            model.add(alarme);
+//        }
+//
+//        tbEventoSensor.setDefaultRenderer(Object.class, new ColorTableRenderer());
 
     } else {
         JOptionPane.showMessageDialog(null, "Nenhuma central selecionada");
@@ -752,9 +727,10 @@ private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_btnFiltrarActionPerformed
 
 private void tbEventoSensorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEventoSensorMouseClicked
-    int row = tbEventoSensor.getSelectedRow();
-    ObjectTableModel<Alarme> model = (ObjectTableModel) tbEventoSensor.getModel();
-    txtLog.setText(model.getValue(row).getLog());
+//Aqui é o evento de clique da lista de EVENTOS SENSOR que o Felipe disse que não terá ação nenhuma para o clique.
+//    int row = tbEventoSensor.getSelectedRow();
+//    ObjectTableModel<Alarme> model = (ObjectTableModel) tbEventoSensor.getModel();
+//    txtLog.setText(model.getValue(row).getLog());
 }//GEN-LAST:event_tbEventoSensorMouseClicked
 
 private void btnFiltrarRouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarRouterActionPerformed
