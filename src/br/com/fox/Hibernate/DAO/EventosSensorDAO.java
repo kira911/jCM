@@ -107,7 +107,7 @@ public class EventosSensorDAO {
         
         try {
             this.session.beginTransaction();
-            ListIterator iterator = this.session.createSQLQuery(sql).setParameter("idCliente", 21)
+            ListIterator iterator = this.session.createSQLQuery(sql).setParameter("idCliente", idCliente)
                                                                     .setParameter("startDate", startDate)
                                                                     .setParameter("endDate", endDate).setMaxResults(limit).list().listIterator();            
             List<EventosSensor> listaEventos = new ArrayList<EventosSensor>();
